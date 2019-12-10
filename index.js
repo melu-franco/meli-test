@@ -23,8 +23,8 @@ app.get('/api/items', (req,res) => {
         title: item.title,
         price: {
           currency: item.currency_id,
-          amount: item.price,
-          decimals: 00,
+          amount: Math.floor(item.price),
+          decimals: Math.floor((item.price - Math.floor(item.price)) * 100)
         },
         address: item.address.city_name, 
         picture: item.thumbnail,
@@ -70,8 +70,8 @@ app.get('/api/items/:id', (req, res) => {
         title: item.title,
         price: {
           currency: item.currency_id,
-          amount: item.price,
-          decimals: 00,
+          amount: Math.floor(item.price),
+          decimals: Math.floor((item.price - Math.floor(item.price)) * 100)
         },
         picture: item.pictures[0].url,
         condition: item.condition,

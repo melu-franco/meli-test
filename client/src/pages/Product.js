@@ -11,11 +11,9 @@ class Product extends Component {
   constructor(props){
     super(props);
     this.state = {
-      product: null,
-      categories: []
+      product: null
     }
   }
-
 
   // Fetch the list on first mount
   componentDidMount() {
@@ -32,7 +30,7 @@ class Product extends Component {
     })
     .then((data) => {
       console.log(data.item);
-      return this.setState({ product: data.item, categories: data.categories })
+      return this.setState({ product: data.item })
     })
     .catch(function(error) {
       console.log(error);
@@ -40,7 +38,7 @@ class Product extends Component {
   }
 
   render() {
-    const { product, categories } = this.state;
+    const { product } = this.state;
 
     return (
       <div className="App">
@@ -56,7 +54,7 @@ class Product extends Component {
                           <p className="product-condition">{product.condition === "new" ? "Nuevo" : product.condition === "used" ? "Usado" : ""} - {product.sold_quantity} vendido{product.sold_quantity !== 1 && `s`}</p>
                           <p className="product-name">{product.title}</p>
                           <div className="d-flex"
-                            ><p className="product-price">{product.price.currency === "USD" ? "U$S" : "$"} {new Intl.NumberFormat("de-DE").format(product.price.amount)}<sup>{product.price.decimals}</sup></p>
+                            ><p className="product-price">{product.price.currency === "USD" ? "U$S" : "$"} {new Intl.NumberFormat("es-AR").format(product.price.amount)}<sup>{product.price.decimals}</sup></p>
                           </div>
                           <Button 
                             primary 

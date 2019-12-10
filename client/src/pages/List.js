@@ -67,7 +67,7 @@ class List extends Component {
                         <div className="resultsItem__info d-flex">
                           <div className="col-10">
                             <div className="d-flex resultsItem__info__price">
-                              <p className="price">{item.price.currency === "USD" ? "U$S" : "$"} {new Intl.NumberFormat("de-DE").format(item.price.amount)}</p>
+                              <p className="price">{item.price.currency === "USD" ? "U$S" : "$"} {new Intl.NumberFormat("es-AR").format(item.price.amount)}</p>
                               {item.free_shipping && <img className="free-shipping" src={ic_shipping} alt="Free shipping"/> }
                             </div>
                             <p className="resultsItem__info__description">{item.title}</p>
