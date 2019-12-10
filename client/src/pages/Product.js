@@ -46,11 +46,11 @@ class Product extends Component {
         <div className="container">
           {product ? (
               <ProductItem className="productItem wrapper">
-                  <div className="productItem__specs row">
-                      <div className="productItem__specs__img col-9">
+                  <div className="productItem__specs row flex-column flex-lg-row">
+                      <div className="productItem__specs__img col col-lg-9">
                         <div className="img" style={{backgroundImage: `url(${product.picture})`}}></div>
                       </div>
-                      <div className="productItem__specs__info col-3">
+                      <div className="productItem__specs__info col col-lg-3">
                           <p className="product-condition">{product.condition === "new" ? "Nuevo" : product.condition === "used" ? "Usado" : ""} - {product.sold_quantity} vendido{product.sold_quantity !== 1 && `s`}</p>
                           <p className="product-name">{product.title}</p>
                           <div className="d-flex"
@@ -64,7 +64,7 @@ class Product extends Component {
                       </div>
                   </div>
                   <div className="row">
-                      <div className="productItem__description col-9">
+                      <div className="productItem__description col col-lg-9">
                           <h3>Descripción del producto</h3>
                           <p>{product.description}</p>
                       </div>

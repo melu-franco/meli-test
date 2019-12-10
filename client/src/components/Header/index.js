@@ -38,7 +38,7 @@ class Header extends Component {
                     <Link className="header__img col-1" to={'/'}>
                         <img src={logo} alt="Mercado Libre"/>
                     </Link>
-                    <form onSubmit={(e) => this.handleSubmit(e)} className="d-flex col-11">
+                    <form onSubmit={(e) => this.handleSubmit(e)} className="d-flex col-10 col-md-11">
                         <input placeholder="Nunca dejes de buscar" value={value} onChange={(e) => this.handleValue(e)} type="text"></input>
                         <button type="submit"></button>
                     </form>
