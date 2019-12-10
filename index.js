@@ -47,6 +47,48 @@ app.get('/api/items', (req,res) => {
   });
 });
 
+// An api endpoint that returns selected product info
+app.get('/api/items/:id', (req, res) => {
+  const item_id = req.params.id;
+
+  axios.all([
+    axios.get(`https://api.mercadolibre.com/items/${item_id}`),
+    axios.get(`https://api.mercadolibre.com/items/${item_id}/description`)
+  ])
+  .then(responseArr => {
+
+    const item = responseArr[0].data;
+    const description = responseArr[1].data.plain_text;
+
+    const response = {
+      author: {
+        name: 'Melina',
+        lastname: 'Franco',
+      },
+      item: {
+        id: item.id,
+        title: item.title,
+        price: {
+          currency: item.currency_id,
+          amount: item.price,
+          decimals: 00,
+        },
+        picture: item.pictures[0].url,
+        condition: item.condition,
+        free_shipping: item.shipping.free_shipping,
+        sold_quantity: item.sold_quantity,
+        description: description
+      }
+    }
+    console.log(response);
+    res.json(response)
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+
+});
+
 //Handles any requests that don't match the ones above
 app.get('*', (req,res) =>{
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
