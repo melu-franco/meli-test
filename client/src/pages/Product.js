@@ -11,7 +11,8 @@ class Product extends Component {
   constructor(props){
     super(props);
     this.state = {
-      product: null
+        loading: true,
+        product: null
     }
   }
 
@@ -23,14 +24,9 @@ class Product extends Component {
   // Retrieves the list of items from the Express app
   getProduct = () => {
     fetch(`/api/items/${this.props.match.params.id}`)
-    .then((res) => {
-      const response = res.json();
-      console.log(response);
-      return response;
-    })
+    .then((res) => res.json())
     .then((data) => {
-      console.log(data.item);
-      return this.setState({ product: data.item })
+      return this.setState({ product: data.item, loading: false })
     })
     .catch(function(error) {
       console.log(error);
@@ -38,19 +34,19 @@ class Product extends Component {
   }
 
   render() {
-    const { product } = this.state;
+    const { loading, product } = this.state;
 
     return (
       <div className="App">
         <Header />
         <div className="container">
-          {product ? (
+            {loading ? <p className="text-loading">Loading..</p> : (loading === false && product) ? (
               <ProductItem className="productItem wrapper">
-                  <div className="productItem__specs row flex-column flex-lg-row">
-                      <div className="productItem__specs__img col col-lg-9">
+                  <div className="productItem__specs row flex-column flex-md-row">
+                      <div className="productItem__specs__img col col-md-6 col-lg-9">
                         <div className="img" style={{backgroundImage: `url(${product.picture})`}}></div>
                       </div>
-                      <div className="productItem__specs__info col col-lg-3">
+                      <div className="productItem__specs__info col col-md-6 col-lg-3">
                           <p className="product-condition">{product.condition === "new" ? "Nuevo" : product.condition === "used" ? "Usado" : ""} - {product.sold_quantity} vendido{product.sold_quantity !== 1 && `s`}</p>
                           <p className="product-name">{product.title}</p>
                           <div className="d-flex"
@@ -70,11 +66,10 @@ class Product extends Component {
                       </div>
                   </div>
               </ProductItem>
-          ) : (
-            <ProductItem>
-              <h2>No List Items Found</h2>
-            </ProductItem>
-          )
+          ) : 
+            <div className="wrapper">
+              <p className="text-notFound">No hay publicaciones que coincidan con tu búsqueda.</p>
+            </div>
         }
         </div>
       </div>
@@ -89,14 +84,22 @@ const ProductItem = styled.div`
         &__specs {
             margin-bottom: 100px;
             min-height: 530px;
+            @media(max-width: 990px) {
+                flex-direction: column;
+                margin-bottom: 60px;
+            }
             &__img {
                 div {
                     height: 100%;
                     width: 100%;
+                    min-height: 400px;
                     object-fit: contain;
                     background-size: contain;
                     background-position: center;
                     background-repeat: no-repeat;
+                }
+                @media(max-width: 768px) {
+                    margin-bottom: 40px;
                 }
             }
             &__info {

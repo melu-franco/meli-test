@@ -15,6 +15,7 @@ class List extends Component {
   constructor(props){
     super(props);
     this.state = {
+      loading: true,
       items: [],
       categories: [],
       searchValue: queryString.parse(this.props.location.search).search
@@ -23,21 +24,19 @@ class List extends Component {
 
   // Fetch the list on first mount
   componentDidMount() {
-    console.log(this.state.searchValue);
     this.getItems();
   }
 
   // Retrieves the list of items from the Express app
   getItems = () => {
     fetch(`/api/items?q=${this.state.searchValue}`)
-    .then((res) => {
-      const response = res.json();
-      console.log(response);
-      return response;
-    })
+    .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-      return this.setState({items: data.items, categories: data.categories});
+      return this.setState({
+        items: data.items, 
+        categories: data.categories,
+        loading: false
+      });
     })
     .catch(function(error) {
       console.log(error);
@@ -45,34 +44,36 @@ class List extends Component {
   }
 
   render() {
-    const { items, categories, searchValue } = this.state;
+    const { loading, items, categories, searchValue } = this.state;
 
     return (
       <div className="App">
         <Header value={searchValue} />
         <div className="container">
-          <p className="Breadcrumb">
-            {categories.map((category, index) => 
-              <span key={index}>{category}</span>
-            )}
-          </p>
+          {items.length > 0 && 
+            <p className="Breadcrumb">
+              {categories.map((category, index) => 
+                <span key={index}>{category}</span>
+              )
+            }
+            </p>}
           {/* Check to see if any items are found*/}
-          {items.length ? (
+          {loading ? <p className="text-loading">Loading..</p> : (loading === false && items.length) ? (
             <ResultsList className="searchResults wrapper">
               {/* Render the list of items */}
               {items.map((item, index) => (
                   <ResultsItem key={index}>
                     <Link className="resultsItem d-flex align-items-center" to={`/items/${item.id}`}>
                         <div className="resultsItem__img" style={{backgroundImage: `url(${item.picture})`}}></div>
-                        <div className="resultsItem__info d-flex">
-                          <div className="col-10">
+                        <div className="resultsItem__info row">
+                          <div className="col-9">
                             <div className="d-flex resultsItem__info__price">
                               <p className="price">{item.price.currency === "USD" ? "U$S" : "$"} {new Intl.NumberFormat("es-AR").format(item.price.amount)}</p>
                               {item.free_shipping && <img className="free-shipping" src={ic_shipping} alt="Free shipping"/> }
                             </div>
                             <p className="resultsItem__info__description">{item.title}</p>
                           </div>
-                          <p className="resultsItem__info__province col-2">
+                          <p className="resultsItem__info__province col-3">
                             {item.address}
                           </p>
                         </div>
@@ -80,9 +81,10 @@ class List extends Component {
                   </ResultsItem>
                 ))}
             </ResultsList>
-          ) : (
-            <p>Loading..</p>
-          )
+          ) : 
+          <div className="wrapper">
+            <p className="text-notFound">No hay publicaciones que coincidan con tu búsqueda.</p>
+          </div>
         }
         </div>
       </div>
@@ -102,6 +104,9 @@ const ResultsItem = styled.li`
     border-top: 1px solid ${colors.lightGray};
   }
   .resultsItem {
+    @media(max-width: 768px) {
+      flex-direction: column;
+    }
     &:hover {
       text-decoration: none;
     }

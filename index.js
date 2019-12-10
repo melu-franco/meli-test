@@ -80,7 +80,6 @@ app.get('/api/items/:id', (req, res) => {
         description: description
       }
     }
-    console.log(response);
     res.json(response)
   })
   .catch(function(error) {

@@ -27,6 +27,19 @@ sup {
     font-size: normal;
 }
 
+.text-loading {
+    color: $gray;
+    margin: 16px 0;
+}
+
+.text-notFound {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.08;
+    padding: 40px;
+}
+
 .Breadcrumb {
     margin: 16px 0;
     color: $gray;
