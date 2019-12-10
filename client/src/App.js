@@ -8,7 +8,7 @@ import Product from './pages/Product';
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter forceRefresh={true}>
         <Switch>
             <Route exact path='/' component={Home}/>
             <Route exact path='/items' component={List}/>

@@ -18,10 +18,15 @@ class Header extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        if (this.state.value) {
+            console.log(this.state.value);
+            this.props.history.push(`/items?search=${this.state.value}`);
+        }
     }
 
     handleValue = (e) => {
         this.setState({value: e.target.value});
+        //console.log(this.state.value);
     }
 
     render() {
