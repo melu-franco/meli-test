@@ -21,8 +21,32 @@ body {
     background-color: $white;
 }
 
+sup {
+    top: -.45em;
+    font-size: 60%;
+    font-size: normal;
+}
+
 .Breadcrumb {
     margin: 16px 0;
     color: $gray;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    span {
+        display: flex;
+        align-items: center;
+        &:not(:first-child) {
+            &::before {
+                content: "";
+                width: 7px;
+                height: 7px;
+                display: block;
+                margin: 0 8px;
+                border-top: 1px solid $gray;
+                border-right: 1px solid $gray;
+                transform: rotate(45deg);
+            }
+        }
+    }
 }
